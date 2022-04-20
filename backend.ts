@@ -121,18 +121,26 @@ export async function cooldowns(userID) {
     //let cooldowns = user.pullCD;
     //
     // probably have an array of cooldowns but for now its just the pull
-    const HALFHOUR = 1000 * 60 * 30;
-    const pullTime = new Date(user.pullCD + HALFHOUR);
-    pullTime.setMinutes(pullTime.getMinutes() + 30);
-    let cdStr =
-      "Pull Available at: " + pullTime.getHours() + ":" + pullTime.getMinutes();
-    if (pullTime.getMinutes() < 10) {
-      cdStr =
-        "Pull Available at: " +
-        pullTime.getHours() +
-        ":0" +
-        pullTime.getMinutes();
+    //const pullTime = new Date(user.pullCD);
+    const pullTime = user.pullCD;
+    const date = pullTime.setMinutes(pullTime.getMinutes() + 30);
+    const diffTime = date - Date.now();
+    const diffMins = diffTime / (1000 * 60);
+    const diffSecs = Math.floor((diffMins % 1) * 60);
+
+    let secondsStr = "";
+    if (diffSecs < 10) {
+      secondsStr = "0" + diffSecs;
+    } else {
+      secondsStr = diffSecs.toString();
     }
+
+    const cdStr =
+      "Pull in: " +
+      Math.floor(diffMins) +
+      " minutes and " +
+      secondsStr +
+      " seconds";
 
     return cdStr;
   } catch (err) {
