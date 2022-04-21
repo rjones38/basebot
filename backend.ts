@@ -125,6 +125,9 @@ export async function cooldowns(userID) {
     const pullTime = user.pullCD;
     const date = pullTime.setMinutes(pullTime.getMinutes() + 30);
     const diffTime = date - Date.now();
+    if (diffTime < 0) {
+      return "Pull Available!";
+    }
     const diffMins = diffTime / (1000 * 60);
     const diffSecs = Math.floor((diffMins % 1) * 60);
 
